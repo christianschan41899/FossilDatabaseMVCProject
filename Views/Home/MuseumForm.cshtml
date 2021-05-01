@@ -1,0 +1,28 @@
+<div>
+    @using MuseumModel.Models
+    @model Museum
+    <h3>Add a Museum</h3>
+    <div class="w-50">
+        <form asp-controller="Home" asp-action="CreateMuseum" method="POST">
+            <div asp-validation-summary="All"></div> 
+            <br/>
+            
+            <label class="text-left col" asp-for="MuseumName"></label>
+            <input class = "form-control col" asp-for="MuseumName">
+            
+            <div class="form-group form-inline row">
+                <div class="col">
+                    <label class="text-left" asp-for="MuseumLatitude"></label>
+                    <input class = "form-control" asp-for="MuseumLatitude">
+                </div>
+                <div class="col">
+                    <label class="text-left" asp-for="MuseumLongitude"></label>
+                    <input class = "form-control" asp-for="MuseumLongitude">
+                </div>
+            </div>
+
+            <br/>
+            <button type="submit">Add Museum</button>
+        </form>
+    </div>
+</div>

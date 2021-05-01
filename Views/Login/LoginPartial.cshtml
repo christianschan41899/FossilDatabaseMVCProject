@@ -1,0 +1,23 @@
+@using UserModel.Models
+@model LoginUser
+<div>
+    <form asp-action="LoginHandler" asp-controller="Login" method="POST">
+            
+        <span class = "text-danger" asp-validation-for="LoginEmail"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="LoginEmail"></label>
+            <input class = "form-control col" asp-for="LoginEmail">
+        </div>
+
+        <span class = "text-danger" asp-validation-for="LoginPassword"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="LoginPassword"></label>
+            <input class = "form-control col" asp-for="LoginPassword">
+        </div>
+        <br/>
+        <div class="form-group form-inline row">
+            <p class="col"></p>
+            <button class="col" type="submit">Login</button>
+        </div>
+    </form>
+</div>

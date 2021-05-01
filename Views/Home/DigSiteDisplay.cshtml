@@ -1,0 +1,27 @@
+<div>
+    @using DigSiteModel.Models
+    @model DigSite
+    <h3>@Model.SiteName</h3>
+    <dd>Created by: @Model.AddedBy.Username</dd>
+    <dd><a href="https://www.google.com/maps/search/?api=1&query=@Model.SiteLatitude,@Model.SiteLongitude">Google Maps Location</a></dd>
+    <h4>Fossils Found At This Site:</h4>
+    <table class = "table table-responsive-sm">
+        <thead class="thead-light">
+            <tr>
+                <td>Fossil</td>
+                <td>Species</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var fossil in @Model.FossilsUncovered)
+        {
+            <tr>
+                <td><a asp-controller="Home" asp-action="GetFossil" asp-route-fossilid="@fossil.FossilID">@fossil.FossilName</a></td>
+                <td>@fossil.FossilSpecies</td>
+                <td><a asp-controller="Home" asp-action="EditFossilForm" asp-route-fossilid="@fossil.FossilID">Edit</a> | <a asp-controller="Home" asp-action="DeleteFossil" asp-route-fossilid="@fossil.FossilID">Delete</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

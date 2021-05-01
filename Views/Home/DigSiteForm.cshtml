@@ -1,0 +1,28 @@
+<div>
+    @using DigSiteModel.Models
+    @model DigSite
+    <h3>Add a Dig Site</h3>
+    <div class="w-50">
+        <form asp-controller="Home" asp-action="CreateDig" method="POST">
+            <div asp-validation-summary="All"></div> 
+            <br/>
+            
+            <label class="text-left col" asp-for="SiteName"></label>
+            <input class = "form-control col" asp-for="SiteName">
+            
+            <div class="form-group form-inline row">
+                <div class="col">
+                    <label class="text-left" asp-for="SiteLatitude"></label>
+                    <input class = "form-control" asp-for="SiteLatitude">
+                </div>
+                <div class="col">
+                    <label class="text-left" asp-for="SiteLongitude"></label>
+                    <input class = "form-control" asp-for="SiteLongitude">
+                </div>
+            </div>
+
+            <br/>
+            <button type="submit">Add Dig Site</button>
+        </form>
+    </div>
+</div>

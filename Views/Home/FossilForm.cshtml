@@ -1,0 +1,41 @@
+<div>
+    @using FossilModel.Models
+    @model Fossil
+    <h3>Add a Fossil</h3>
+    <div class="w-50">
+        <form asp-controller="Home" asp-action="CreateFossil" method="POST">
+            <div asp-validation-summary="All"></div> 
+            <br/>
+            
+            <label class="text-left col" asp-for="FossilName"></label>
+            <input class = "form-control col" asp-for="FossilName">
+
+            <label class="text-left col" asp-for="FossilSpecies"></label>
+            <input class = "form-control col" asp-for="FossilSpecies">
+            
+            <div class="form-group form-inline row">
+                <div class="col">
+                    <label asp-for="DigSiteID"></label>
+                    <select class = "form-control" asp-for="DigSiteID">
+                        @foreach (var site in ViewBag.DigList)
+                        {
+                            <option value="@site.DigSiteID">@site.SiteName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <label asp-for="MuseumID"></label>
+                    <select class = "form-control" asp-for="MuseumID">
+                        @foreach (var museum in ViewBag.MuseumList)
+                        {
+                            <option value="@museum.MuseumID">@museum.MuseumName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <br/>
+            <button type="submit">Add Fossil</button>
+        </form>
+    </div>
+</div>

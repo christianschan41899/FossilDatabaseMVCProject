@@ -1,0 +1,16 @@
+<div>
+    @using FossilModel.Models
+    @model Fossil
+    <h3>@Model.FossilName</h3>
+    <dd>Created by: @Model.AddedBy.Username</dd>
+    <dl>
+        <dt>Species:</dt>
+        <dd>@Model.FossilSpecies</dd>
+
+        <dt>Found At:</dt>
+        <dd><a asp-controller="Home" asp-action="GetDig" asp-route-digid="@Model.DigSiteID">@Model.UnearthedAt.SiteName</a></dd>
+
+        <dt>Housed At:</dt>
+        <dd><a asp-controller="Home" asp-action="GetMuseum" asp-route-digid="@Model.MuseumID">@Model.LocatedAt.MuseumName</a></dd>
+    </dl>
+</div>

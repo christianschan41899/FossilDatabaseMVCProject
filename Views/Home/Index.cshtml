@@ -1,0 +1,67 @@
+﻿<div>
+    @{
+        if(ViewBag.LoginID == null)
+        {
+            <span class = "d-flex justify-content-end"><a asp-controller="Login" asp-action="SignInPage">Login</a></span>
+        }
+        else
+        {
+            <span class = "d-flex justify-content-end"><a asp-controller="Login" asp-action="Logout">Log Out</a></span>
+        }
+    }
+    <h3>Welcome to the Fossil Database!</h3>
+    <p>Pick a Museum or Dig Site from the list below</p>
+    
+    <div class = "d-flex">
+        <div class = "d-inline-block w-50 mr-2">
+            <div class = "d-flex justify-content-between">
+                <h4>Dig Sites</h4>
+                <a class="btn btn-outline-primary" asp-controller="Home" asp-action="DigForm">Create Dig</a>
+            </div>
+            <table class = "table table-responsive-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <td>Dig Site</td>
+                        <td>Location</td>
+                        <td># of Fossils</td>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var site in ViewBag.DigSiteList)
+                {
+                    <tr>
+                        <td><a asp-action="GetDig" asp-controller="Home" asp-route-digid=@site.DigSiteID>@site.SiteName</a></td>
+                        <td><a href="https://www.google.com/maps/search/?api=1&query=@site.SiteLatitude,@site.SiteLongitude">Google Maps Location</a></td>
+                        <td>@site.FossilsUncovered.Count</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class = "d-inline-block w-50 ml-2">
+            <div class = "d-flex justify-content-between">
+                <h4>Museums</h4>
+                <a class="btn btn-outline-primary" asp-controller="Home" asp-action="MuseumForm">Create Museum</a>
+            </div>
+            <table class = "table table-responsive-sm">
+                <thead class = "thead-light">
+                    <tr>
+                        <td>Museum</td>
+                        <td>Location</td>
+                        <td># of Fossils</td>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var museum in ViewBag.MuseumList)
+                {
+                    <tr>
+                        <td><a asp-action="GetMuseum" asp-controller="Home" asp-route-museumid=@museum.MuseumID>@museum.MuseumName</a></td>
+                        <td><a href="https://www.google.com/maps/search/?api=1&query=@museum.MuseumLatitude,@museum.MuseumLongitude">Google Maps Location</a></td>
+                        <td>@museum.FossilsOwned.Count</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

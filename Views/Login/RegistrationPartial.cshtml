@@ -1,0 +1,36 @@
+@using UserModel.Models
+@model User
+<div>
+    <form asp-action="CreateUser" asp-controller="Login" method="POST">
+
+        <span class = "text-danger" asp-validation-for="Username"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="Username"></label>
+            <input class = "form-control col" asp-for="Username">
+        </div>
+
+        <span class = "text-danger" asp-validation-for="Email"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="Email"></label>
+            <input class = "form-control col" asp-for="Email">
+        </div>
+
+        <span class = "text-danger" asp-validation-for="Password"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="Password"></label>
+            <input class = "form-control col" asp-for="Password">
+        </div>
+
+        <span class = "text-danger" asp-validation-for="Confirm"></span>
+        <div class="form-group form-inline row">
+            <label class="text-left col" asp-for="Confirm"></label>
+            <input class = "form-control col" asp-for="Confirm">
+        </div>
+        <br/>
+        <div class="form-group form-inline row">
+            <p class = "col"></p>
+            <button class="col" type="submit">Sign Up</button>
+        </div>
+        
+    </form>
+</div>
