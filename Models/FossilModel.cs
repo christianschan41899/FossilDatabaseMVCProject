@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using UserModel.Models;
 using DigSiteModel.Models;
 using MuseumModel.Models;
+using ImageUpload.Models;
 
 namespace FossilModel.Models
 {
@@ -21,8 +22,6 @@ namespace FossilModel.Models
         [Required]
         [Display(Name="Species")]
         public string FossilSpecies {get; set;}
-
-        public string ImageSrc {get; set;}
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
@@ -46,5 +45,8 @@ namespace FossilModel.Models
         //One to many with User
         public int UserID {get; set;}
         public User AddedBy {get; set;}
+
+        //One to many with Image
+        public List<ImageModel> FossilImages {get; set;}
     }
 }

@@ -9,20 +9,28 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 using UserModel.Models;
 using FossilDigContext.Models;
 using DigSiteModel.Models;
 using FossilModel.Models;
 using MuseumModel.Models;
+using ImageUpload.Models;
+using ViewModels.Models;
+
 
 namespace Project.Controllers
 {
     public class HomeController : Controller
     {
         private MyContext dbContext;
-        public HomeController(MyContext context)
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public HomeController(MyContext context, IWebHostEnvironment hostEnvironment)
         {
             dbContext = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         [HttpGet("")]
@@ -166,11 +174,16 @@ namespace Project.Controllers
         {
             Fossil displayFossil = dbContext.Fossils
                 .Include(fossil => fossil.AddedBy)
+                .Include(fossil => fossil.FossilImages)
                 .Include(fossil => fossil.UnearthedAt)
                 .Include(fossil => fossil.LocatedAt)
                 .FirstOrDefault(fossil => fossil.FossilID == fossilid);
+
+            FossilImage displayData = new FossilImage{
+                fossil = displayFossil
+            };
             
-            return View("FossilDisplay", displayFossil);
+            return View("FossilDisplay", displayData);
         }
 
         /*************************
@@ -184,7 +197,23 @@ namespace Project.Controllers
                 return RedirectToAction("SignInPage", "Login");
             }
             Fossil deleteFossil = dbContext.Fossils
+                .Include(fossil => fossil.FossilImages)
                 .FirstOrDefault(fossil => fossil.FossilID == fossilid);
+
+            //Deleting a fossil will also need to delete all images associated with the fossil.
+            foreach(var image in deleteFossil.FossilImages)
+            {
+                //retrieve image path
+                var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "Image", image.ImageName);
+                //Check if image exists (make sure something isn't accidentally deleted or if an error is thrown)
+                if(System.IO.File.Exists(imagePath))
+                {
+                    //Delete Image
+                    System.IO.File.Delete(imagePath);
+                }
+                //remove image's database entry
+                dbContext.Images.Remove(image);
+            }
             
             dbContext.Fossils.Remove(deleteFossil);
             dbContext.SaveChanges();
@@ -240,5 +269,44 @@ namespace Project.Controllers
                 return View("EditFossil", editFossil);
             }
         }
+
+        /*****************************
+            Handle image upload
+        ******************************/
+        [HttpPost("fossils/{fossilid}/addImage")]
+        [RequestSizeLimit(4194304)] //4MB Upload limit
+        public async Task<IActionResult> CreateFossilImage(FossilImage newImage,int fossilid)
+        {
+            //Check if our submit actually has an image, otherwise redirect back to site.
+            if(newImage.image != null)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(newImage.image.ImageFile.FileName); //Grabs string of file name
+                string extension = Path.GetExtension(newImage.image.ImageFile.FileName);//Grabs string of file extension
+                //Create new file name based on DateTime to avoid duplicate file names.
+                fileName = fileName + DateTime.Now.ToString("yyyyMMddmmss") + extension;
+                //Get path image will be saved to
+                string path = Path.Combine(wwwRootPath+"/Image" , fileName);
+                //Put image in wwwroot folder
+                using(var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await newImage.image.ImageFile.CopyToAsync(fileStream);
+                }
+                ImageModel addImage = new ImageModel{
+                    FossilID = fossilid,
+                    ImageName = fileName,
+                    ImageFile = newImage.image.ImageFile
+                };
+                dbContext.Add(addImage);
+                await dbContext.SaveChangesAsync();
+                return Redirect($"../{fossilid}");
+            }
+            else
+            {
+                return Redirect($"../{fossilid}");
+            }
+            
+        }
     }
+
 }

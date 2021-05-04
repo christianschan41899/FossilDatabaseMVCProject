@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using FossilModel.Models;
 using UserModel.Models;
+using ImageUpload.Models;
 
 namespace MuseumModel.Models
 {
@@ -25,8 +26,6 @@ namespace MuseumModel.Models
         [Display(Name="Longitude (+ for East, - for West)")]
         public float MuseumLongitude {get; set;}
 
-        public string ImageSrc {get; set;}
-
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
@@ -41,5 +40,6 @@ namespace MuseumModel.Models
         //One to many with User
         public int UserID {get; set;}
         public User AddedBy {get; set;}
+
     }
 }

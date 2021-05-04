@@ -3,14 +3,16 @@ using System;
 using FossilDigContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Project.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20210503214816_FourthMigration")]
+    partial class FourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,15 +97,25 @@ namespace Project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DigSiteID")
+                        .HasColumnType("int");
+
                     b.Property<int>("FossilID")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("MuseumID")
+                        .HasColumnType("int");
+
                     b.HasKey("ImageID");
 
+                    b.HasIndex("DigSiteID");
+
                     b.HasIndex("FossilID");
+
+                    b.HasIndex("MuseumID");
 
                     b.ToTable("Images");
                 });
@@ -201,9 +213,21 @@ namespace Project.Migrations
 
             modelBuilder.Entity("ImageUpload.Models.ImageModel", b =>
                 {
+                    b.HasOne("DigSiteModel.Models.DigSite", "DescribesSite")
+                        .WithMany("DigImages")
+                        .HasForeignKey("DigSiteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FossilModel.Models.Fossil", "DescribesFossil")
                         .WithMany("FossilImages")
                         .HasForeignKey("FossilID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MuseumModel.Models.Museum", "DescribesMuseum")
+                        .WithMany("MuseumImages")
+                        .HasForeignKey("MuseumID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

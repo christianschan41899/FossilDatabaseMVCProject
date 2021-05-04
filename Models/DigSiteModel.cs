@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using FossilModel.Models;
 using UserModel.Models;
+using ImageUpload.Models;
 
 namespace DigSiteModel.Models
 {
@@ -24,8 +25,6 @@ namespace DigSiteModel.Models
         [Required]
         [Display(Name="Longitude (+ for East, - for West)")]
         public float SiteLongitude {get; set;}
-
-        public string ImageSrc {get; set;}
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

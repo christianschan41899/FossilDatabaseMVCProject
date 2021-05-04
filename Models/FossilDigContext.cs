@@ -1,6 +1,7 @@
 using UserModel.Models;
 using FossilModel.Models;
 using DigSiteModel.Models;
+using ImageUpload.Models;
 using MuseumModel.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,6 @@ namespace FossilDigContext.Models
         public DbSet<Fossil> Fossils {get; set;}
         public DbSet<DigSite> DigSites {get; set;}
         public DbSet<Museum> Museums {get; set;}
+        public DbSet<ImageModel> Images {get; set;}
     }
 }
